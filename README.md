@@ -9,3 +9,5 @@ The barrel jack style connectors used for the voltage input and output are stand
 The embedded firmware for the converter runs on the Microchip SAMD21E17A ARM Cortex M0 microcontroller, and can relay power monitoring statistics to a connected computer over a serial communications port.
 
 <img src="https://github.com/fbutkovich/Smart-Buck-Intelligent-DC-DC-Converter/blob/main/docs/assets/images/Smart Buck Converter Top Isometric.jpg" style="display: block; margin: auto;" />
+
+<img src="https://github.com/fbutkovich/Smart-Buck-Intelligent-DC-DC-Converter/blob/main/docs/assets/images/Smart Buck Converter Bottom Isometric.jpg" style="display: block; margin: auto;" />
