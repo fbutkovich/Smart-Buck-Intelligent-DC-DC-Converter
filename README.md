@@ -14,7 +14,7 @@ The embedded firmware for the converter runs on the Microchip SAMD21E17A ARM Cor
 
 The input screw terminal block is intended to be connected to a power tool battery using an “power wheels adapter”, which is fundamentally a flying lead breakout for the voltage of common power tool battery packs (Dewalt, Milwaukee, Makita etc.) that allows replacement of the standard lead-acid battery that comes in most childrens motorized cars.
 
-<img src="https://github.com/fbutkovich/Smart-Buck-Intelligent-DC-DC-Converter/blob/main/docs/assets/images/IMG_2854.jpg" style="display: block; margin: auto;" />
+<img src="https://github.com/fbutkovich/Smart-Buck-Intelligent-DC-DC-Converter/blob/main/docs/assets/images/IMG_2854.JPG" style="display: block; margin: auto;" />
 
 After the order and assembly of the first revision, as to be expected with any new electronic design there were several mistakes I ended up throubleshooting, thus leading to a few cuts and jumpers on the PCB itself. All of the corrections to the initial design were translated to the current revision of the schematic and layout and include:
 
@@ -24,9 +24,9 @@ After the order and assembly of the first revision, as to be expected with any n
 * Pinout of reset button was incorrect, again this components (TL3342F160QG) symbol and footprint for KiCad were sourced from SnapEDA, however the symbol led to the ground being connected to pushbutton in the normally     closed position, causing the microcontroller to be in a constant state of reset.
 * Footprint size and capacity of feed-forward capacitor required for the LM2596 adjustable buck regulator were incorrect.
 
-<img src="https://github.com/fbutkovich/Smart-Buck-Intelligent-DC-DC-Converter/blob/main/docs/assets/images/IMG_2811.jpg" style="display: block; margin: auto;" />
+<img src="https://github.com/fbutkovich/Smart-Buck-Intelligent-DC-DC-Converter/blob/main/docs/assets/images/IMG_2811.JPG" style="display: block; margin: auto;" />
 
-<img src="https://github.com/fbutkovich/Smart-Buck-Intelligent-DC-DC-Converter/blob/main/docs/assets/images/IMG_2812.jpg" style="display: block; margin: auto;" />
+<img src="https://github.com/fbutkovich/Smart-Buck-Intelligent-DC-DC-Converter/blob/main/docs/assets/images/IMG_2812.JPG" style="display: block; margin: auto;" />
 
 The desired goal of this project is to create a portable power bank suited for applications requiring 12VDC, that is more compact and offers better performance monitoring and control than commercially available products that exist (such as the Jackery power station, Celestron PowerTank, Apertura Portable Telescope Power Supply) to name a few. Since this design is meant to accept a variable input DC voltage which can be obtained from common power tool batteries, of which there numerous manufacturers of, the versatility is endless. 
 
