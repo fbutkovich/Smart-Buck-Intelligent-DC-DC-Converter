@@ -18,11 +18,11 @@ The input screw terminal block is intended to be connected to a power tool batte
 
 After the order and assembly of the first revision, as to be expected with any new electronic design there were several mistakes I ended up throubleshooting, thus leading to a few cuts and jumpers on the PCB itself. All of the corrections to the initial design were translated to the current revision of the schematic and layout and include:
 
--Ground plane disconnected from GND pins of U2, causing numerous headaches when attempting to flash bootloader onto IC and debug.
--Wrong pinout on U6, causing GND to be disconnected and frying IC upon first powerup. STCS05DR symbol and footprint were downloaded directly from SnapEDA, however it was later discovered they were incorrect for KiCad.
--SWCLK signal needed 1kOhm pullup resistor for the SWD interface to work properly.
--Pinout of reset button was incorrect, again this components (TL3342F160QG) symbol and footprint for KiCad were sourced from SnapEDA, however the symbol led to the ground being connected to pushbutton in the normally closed position, causing the microcontroller to be in a constant state of reset.
--Footprint size and capacity of feed-forward capacitor required for the LM2596 adjustable buck regulator were incorrect.
+* Ground plane disconnected from GND pins of U2, causing numerous headaches when attempting to flash bootloader onto IC and debug.
+* Wrong pinout on U6, causing GND to be disconnected and frying IC upon first powerup. STCS05DR symbol and footprint were downloaded directly from SnapEDA, however it was later discovered they were incorrect for KiCad.
+* SWCLK signal needed 1kOhm pullup resistor for the SWD interface to work properly.
+* Pinout of reset button was incorrect, again this components (TL3342F160QG) symbol and footprint for KiCad were sourced from SnapEDA, however the symbol led to the ground being connected to pushbutton in the normally     closed position, causing the microcontroller to be in a constant state of reset.
+* Footprint size and capacity of feed-forward capacitor required for the LM2596 adjustable buck regulator were incorrect.
 
 <img src="https://github.com/fbutkovich/Smart-Buck-Intelligent-DC-DC-Converter/blob/main/docs/assets/images/IMG_2811.jpg" style="display: block; margin: auto;" />
 
