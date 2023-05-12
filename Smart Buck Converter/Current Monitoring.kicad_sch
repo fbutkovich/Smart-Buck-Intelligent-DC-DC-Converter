@@ -6,8 +6,8 @@
 
   (title_block
     (title "Smart Buck Converter")
-    (date "2023-02-10")
-    (rev "1.0.0")
+    (date "5/12/2023")
+    (rev "2.0.0")
     (company "Fabian Butkovich")
     (comment 1 "Power Input/Output Current Monitoring")
   )
