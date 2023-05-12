@@ -1,0 +1,46 @@
+(footprint "PE-54039NL" (version 20211014) (generator pcbnew)
+  (layer "F.Cu")
+  (tedit 0)
+  (descr "Thru-hole toroidal inductor, 220uH @ 3.0A")
+  (attr through_hole)
+  (fp_text reference "REF**" (at -13.25 0 90 unlocked) (layer "F.SilkS")
+    (effects (font (size 2.5 2.5) (thickness 0.2)))
+    (tstamp c58960d9-4cac-4036-ad2e-1aef26946dae)
+  )
+  (fp_text value "PE-54039NL" (at 0 -2.25 unlocked) (layer "F.Fab")
+    (effects (font (size 2 2) (thickness 0.2)))
+    (tstamp 5b96c1ad-46ba-4366-8241-fbc1cd0e9bbd)
+  )
+  (fp_text user "${REFERENCE}" (at 0 2.25 unlocked) (layer "F.Fab")
+    (effects (font (size 2 2) (thickness 0.2)))
+    (tstamp fced3dbe-eec8-4979-aefd-686432f00d6c)
+  )
+  (fp_line (start 12.625 5.125) (end 12.625 4.375) (layer "F.SilkS") (width 0.2) (tstamp 501880c3-8633-456f-9add-0e8fa1932ba6))
+  (fp_line (start 12.625 -5.125) (end 12.625 -4.375) (layer "F.SilkS") (width 0.2) (tstamp 88002554-c459-46e5-8b22-6ea6fe07fd4c))
+  (fp_line (start 15.5 -5.125) (end 15.5 5.125) (layer "F.SilkS") (width 0.2) (tstamp acb0068c-c0e7-44cf-a209-296716acb6a2))
+  (fp_line (start 14.5 -5.125) (end 14.5 5.125) (layer "F.SilkS") (width 0.2) (tstamp d70d1cd3-1668-4688-8eb7-f773efb7bb87))
+  (fp_rect (start -10.54 -5.715) (end 10.54 5.715) (layer "F.SilkS") (width 0.5) (fill none) (tstamp e8314017-7be6-4011-9179-37449a29b311))
+  (fp_arc (start 12.625 -0.875) (mid 13.5 0) (end 12.625 0.875) (layer "F.SilkS") (width 0.2) (tstamp 00f3ea8b-8a54-4e56-84ff-d98f6c00496c))
+  (fp_arc (start 12.625 2.625) (mid 13.5 3.5) (end 12.625 4.375) (layer "F.SilkS") (width 0.2) (tstamp 477892a1-722e-4cda-bb6c-fcdb8ba5f93e))
+  (fp_arc (start 12.625 0.875) (mid 13.5 1.75) (end 12.625 2.625) (layer "F.SilkS") (width 0.2) (tstamp 60ff6322-62e2-4602-9bc0-7a0f0a5ecfbf))
+  (fp_arc (start 12.625 -2.625) (mid 13.5 -1.75) (end 12.625 -0.875) (layer "F.SilkS") (width 0.2) (tstamp 8fcec304-c6b1-4655-8326-beacd0476953))
+  (fp_arc (start 12.625 -4.375) (mid 13.5 -3.5) (end 12.625 -2.625) (layer "F.SilkS") (width 0.2) (tstamp c7e7067c-5f5e-48d8-ab59-df26f9b35863))
+  (pad "1" thru_hole circle (at 0 -3.81) (size 1.816 1.816) (drill 0.8) (layers *.Cu *.Mask) (tstamp 23e66461-bcf2-4335-93c2-5c91dfd00187))
+  (pad "2" thru_hole circle (at 0 3.81) (size 1.816 1.816) (drill 0.8) (layers *.Cu *.Mask) (tstamp 5b2b5c7d-f943-4634-9f0a-e9561705c49d))
+  (group "" (id 29e78086-2175-405e-9ba3-c48766d2f50c)
+    (members
+      00f3ea8b-8a54-4e56-84ff-d98f6c00496c
+      477892a1-722e-4cda-bb6c-fcdb8ba5f93e
+      501880c3-8633-456f-9add-0e8fa1932ba6
+      60ff6322-62e2-4602-9bc0-7a0f0a5ecfbf
+      88002554-c459-46e5-8b22-6ea6fe07fd4c
+      8fcec304-c6b1-4655-8326-beacd0476953
+      c7e7067c-5f5e-48d8-ab59-df26f9b35863
+    )
+  )
+  (model "C:/Users/Fabian/Documents/KiCad/6.0/3dmodels/PE-53145NL.STEP"
+    (offset (xyz -10.85 15.6 -6.6))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 0))
+  )
+)

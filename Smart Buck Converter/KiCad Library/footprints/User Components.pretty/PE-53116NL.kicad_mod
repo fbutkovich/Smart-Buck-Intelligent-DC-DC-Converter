@@ -1,0 +1,47 @@
+(footprint "PE-53116NL" (version 20211014) (generator pcbnew)
+  (layer "F.Cu")
+  (tedit 0)
+  (descr "Thru-hole toroidal inductor, 220uH @ 3.0A")
+  (attr through_hole)
+  (fp_text reference "REF**" (at -23.25 0 90 unlocked) (layer "F.SilkS")
+    (effects (font (size 4 4) (thickness 0.2)))
+    (tstamp c58960d9-4cac-4036-ad2e-1aef26946dae)
+  )
+  (fp_text value "PE-53116NL" (at 0 -2.25 unlocked) (layer "F.Fab")
+    (effects (font (size 2 2) (thickness 0.2)))
+    (tstamp 5b96c1ad-46ba-4366-8241-fbc1cd0e9bbd)
+  )
+  (fp_text user "${REFERENCE}" (at 0 2.25 unlocked) (layer "F.Fab")
+    (effects (font (size 2 2) (thickness 0.2)))
+    (tstamp fced3dbe-eec8-4979-aefd-686432f00d6c)
+  )
+  (fp_line (start -11.5 6) (end -11.5 5.25) (layer "F.SilkS") (width 0.2) (tstamp 501880c3-8633-456f-9add-0e8fa1932ba6))
+  (fp_line (start -11.5 -6) (end -11.5 -5.25) (layer "F.SilkS") (width 0.2) (tstamp 88002554-c459-46e5-8b22-6ea6fe07fd4c))
+  (fp_rect (start -18.5 -10.5) (end 18.5 10.5) (layer "F.SilkS") (width 0.75) (fill none) (tstamp e8314017-7be6-4011-9179-37449a29b311))
+  (fp_arc (start -11.5 -1.75) (mid -10.625 -0.875) (end -11.5 0) (layer "F.SilkS") (width 0.2) (tstamp 00f3ea8b-8a54-4e56-84ff-d98f6c00496c))
+  (fp_arc (start -11.5 1.75) (mid -10.625 2.625) (end -11.5 3.5) (layer "F.SilkS") (width 0.2) (tstamp 477892a1-722e-4cda-bb6c-fcdb8ba5f93e))
+  (fp_arc (start -11.5 0) (mid -10.625 0.875) (end -11.5 1.75) (layer "F.SilkS") (width 0.2) (tstamp 60ff6322-62e2-4602-9bc0-7a0f0a5ecfbf))
+  (fp_arc (start -11.5 -3.5) (mid -10.625 -2.625) (end -11.5 -1.75) (layer "F.SilkS") (width 0.2) (tstamp 8fcec304-c6b1-4655-8326-beacd0476953))
+  (fp_arc (start -11.5 3.5) (mid -10.625 4.375) (end -11.5 5.25) (layer "F.SilkS") (width 0.2) (tstamp 997c2f12-73ba-4c01-9ee0-42e37cbab790))
+  (fp_arc (start -11.5 -5.25) (mid -10.625 -4.375) (end -11.5 -3.5) (layer "F.SilkS") (width 0.2) (tstamp c7e7067c-5f5e-48d8-ab59-df26f9b35863))
+  (pad "1" thru_hole circle (at -11.43 -7.62) (size 2.41 2.41) (drill 1.4) (layers *.Cu *.Mask) (tstamp 23e66461-bcf2-4335-93c2-5c91dfd00187))
+  (pad "2" thru_hole circle (at -11.43 7.62) (size 2.41 2.41) (drill 1.4) (layers *.Cu *.Mask) (tstamp 5b2b5c7d-f943-4634-9f0a-e9561705c49d))
+  (pad "3" thru_hole circle (at 11.43 -7.62) (size 2.41 2.41) (drill 1.4) (layers *.Cu *.Mask) (tstamp 4e66a44f-7fa6-4e16-bf9b-62ec864301a5))
+  (group "" (id c873689a-d206-42f5-aead-9199b4d63f51)
+    (members
+      00f3ea8b-8a54-4e56-84ff-d98f6c00496c
+      477892a1-722e-4cda-bb6c-fcdb8ba5f93e
+      501880c3-8633-456f-9add-0e8fa1932ba6
+      60ff6322-62e2-4602-9bc0-7a0f0a5ecfbf
+      88002554-c459-46e5-8b22-6ea6fe07fd4c
+      8fcec304-c6b1-4655-8326-beacd0476953
+      997c2f12-73ba-4c01-9ee0-42e37cbab790
+      c7e7067c-5f5e-48d8-ab59-df26f9b35863
+    )
+  )
+  (model "C:/Users/fbutkovich/Downloads/3d_model_pe-53116nl_1627396977/PE-53116NL.STEP"
+    (offset (xyz -10.5 27.5 -5))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 0))
+  )
+)

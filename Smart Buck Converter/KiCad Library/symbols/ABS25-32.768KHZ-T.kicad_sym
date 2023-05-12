@@ -1,0 +1,56 @@
+
+(kicad_symbol_lib (version 20211014) (generator kicad_symbol_editor)
+  (symbol "ABS25-32.768KHZ-T" (pin_names (offset 1.016)) (in_bom yes) (on_board yes)
+    (property "Reference" "Y" (id 0) (at -2.54 2.54 0)
+      (effects (font (size 1.27 1.27)) (justify bottom left))
+    )
+    (property "Value" "ABS25-32.768KHZ-T" (id 1) (at -2.54 -5.08 0)
+      (effects (font (size 1.27 1.27)) (justify bottom left))
+    )
+    (property "Footprint" "XTAL_ABS25-32.768KHZ-6-1-T" (id 2) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify bottom) hide)
+    )
+    (property "MANUFACTURER" "Abracon Corporation" (id 4) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify bottom) hide)
+    )
+    (property "STANDARD" "Manufacturer Recommendations" (id 5) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify bottom) hide)
+    )
+    (property "PARTREV" "12.01.15" (id 6) (at 0 0 0)
+      (effects (font (size 1.27 1.27)) (justify bottom) hide)
+    )
+    (symbol "ABS25-32.768KHZ-T_0_0"
+      (polyline
+        (pts (xy 0.9525 1.905) (xy 0.9525 -1.905)) (stroke (width 0.254))
+      )
+      (polyline
+        (pts (xy -0.9525 -1.905) (xy -0.9525 1.905)) (stroke (width 0.254))
+      )
+      (polyline
+        (pts (xy -1.5875 0.0) (xy -2.54 0.0)) (stroke (width 0.254))
+      )
+      (polyline
+        (pts (xy 1.5875 0.0) (xy 2.54 0.0)) (stroke (width 0.254))
+      )
+      (rectangle (start -1.5875 -1.905) (end 1.5875 1.905)
+        (stroke (width 0.254)) (fill (type background))
+      )
+      (pin passive line (at -7.62 0.0 0) (length 5.08)
+        (name "~"
+          (effects (font (size 1.016 1.016)))
+        )
+        (number "1"
+          (effects (font (size 1.016 1.016)))
+        )
+      )
+      (pin passive line (at 7.62 0.0 180.0) (length 5.08)
+        (name "~"
+          (effects (font (size 1.016 1.016)))
+        )
+        (number "4"
+          (effects (font (size 1.016 1.016)))
+        )
+      )
+    )
+  )
+)
