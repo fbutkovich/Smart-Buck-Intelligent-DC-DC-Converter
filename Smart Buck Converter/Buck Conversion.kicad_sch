@@ -1840,6 +1840,35 @@
     )
   )
 
+  (symbol (lib_id "Diode:PMEG3015EH") (at 187.96 34.29 180) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid 4be0ae65-27cf-40ff-bd7a-a0b4af378eec)
+    (property "Reference" "D1" (at 187.96 29.21 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "CDBMHT340-HF" (at 187.96 31.75 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Diode_SMD:D_SOD-123F" (at 187.96 29.845 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "https://www.mouser.com/datasheet/2/80/comchip_technology_comc-s-a0004994317-1-1734023.pdf" (at 187.96 34.29 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid d583aec7-dc95-41a6-b899-4d6fc336787c))
+    (pin "2" (uuid 0617781e-2baa-4068-a96b-53c30b4cac24))
+    (instances
+      (project "Smart Buck Converter"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/039da05a-c514-47d5-a2ac-898f12b81897"
+          (reference "D1") (unit 1)
+        )
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/f42437d8-c8e9-4867-9848-3b4f9584cf8b"
+          (reference "D6") (unit 1)
+        )
+      )
+    )
+  )
+
   (symbol (lib_id "Device:C_Polarized") (at 156.21 121.92 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5448f624-9c1e-4570-be32-6320ea259924)
@@ -2007,35 +2036,6 @@
       (project "Smart Buck Converter"
         (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/f42437d8-c8e9-4867-9848-3b4f9584cf8b"
           (reference "U3") (unit 1)
-        )
-      )
-    )
-  )
-
-  (symbol (lib_id "Diode:PMEG3015EH") (at 187.96 34.29 180) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
-    (uuid 95d3b5fb-6e15-467b-b0fa-21b704e7c4cb)
-    (property "Reference" "D1" (at 187.96 29.21 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Value" "PMEG3015EH" (at 187.96 31.75 0)
-      (effects (font (size 1.27 1.27)))
-    )
-    (property "Footprint" "Diode_SMD:D_SOD-123F" (at 187.96 29.845 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PMEG3015EH_EJ.pdf" (at 187.96 34.29 0)
-      (effects (font (size 1.27 1.27)) hide)
-    )
-    (pin "1" (uuid 9677676e-d9fa-43b3-974b-8ebabba92f1c))
-    (pin "2" (uuid 465390f0-44ac-491d-bcd3-f721ce8369f0))
-    (instances
-      (project "Smart Buck Converter"
-        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/039da05a-c514-47d5-a2ac-898f12b81897"
-          (reference "D1") (unit 1)
-        )
-        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/f42437d8-c8e9-4867-9848-3b4f9584cf8b"
-          (reference "D6") (unit 1)
         )
       )
     )
