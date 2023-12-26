@@ -1,27 +1,40 @@
 /*
-* Source code for Smart Buck step-down voltage converter with power monitoring functionality using the Texas Instruments INA219 Zero-Drift current/power monitor.
-* Input power to the physical circuit is intended to be an 18-22VDC lithium-ion battery source, while the output is 12VDC regulated up to 3A of current achieved by
-* utilizing the Texas Instruments LM2596 SIMPLE SWITCHER 3A Step-Down Voltage Regulator.
-*
-* https://www.ti.com/lit/ds/symlink/ina219.pdf
-* https://www.ti.com/lit/ds/symlink/lm2596.pdf
-*
-* Dependencies:
+  Source code for Smart Buck step-down voltage converter with power monitoring functionality using the Texas Instruments INA219 Zero-Drift current/power monitor.
+  Input power to the physical circuit is intended to be an 18-22VDC lithium-ion battery source, while the output is 12VDC regulated up to 3A of current achieved by
+  utilizing the Texas Instruments LM2596 SIMPLE SWITCHER 3A Step-Down Voltage Regulator.
+
+  https://www.ti.com/lit/ds/symlink/ina219.pdf
+  https://www.ti.com/lit/ds/symlink/lm2596.pdf
+
+  Dependencies:
 *   * Arduino Wire library
 *   * INA219 library by DeCristofaro John, Jukka-Pekka Sarjanen, gandy92, Flavius Bindea, Robert Wolff
-*
-* This code was developed and tested to run on the Microchip SAMD21E17A ARM Cortex M0 microcontroller.
-*
-* March 2023 by Fabian Butkovich
-*/ 
+
+  This code was developed and tested to run on the Microchip SAMD21E17A ARM Cortex M0 microcontroller.
+
+  March 2023 by Fabian Butkovich
+*/
 
 #include <Wire.h>
 #include <INA219.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
 // Create instance for INA219 library class
 INA219 PWR_IN_IMON;
 // INA219 sensor for power output has different I2C address
 INA219 PWR_OUT_IMON(INA219::I2C_ADDR_41);
+
+// OLED display width, in pixels
+#define SCREEN_WIDTH 128  
+// OLED display height, in pixels
+#define SCREEN_HEIGHT 64  
+
+// OLED display reset pin # (or -1 if sharing Arduino reset pin)
+#define OLED_RESET -1        
+// See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+#define SCREEN_ADDRESS 0x3D  
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 #define R_SHUNT 0.1
 #define V_SHUNT_MAX 0.3
@@ -29,11 +42,11 @@ INA219 PWR_OUT_IMON(INA219::I2C_ADDR_41);
 #define V_BUS_OUT_MAX 16
 #define I_MAX_EXPECTED 3
 // How many samples to take and average for current measurments, different types of loads (resistive, capacitive etc.) on
-// the regulated output can cause the over-current function to false trigger if for example there is a high startup current but then the 
+// the regulated output can cause the over-current function to false trigger if for example there is a high startup current but then the
 // value settles after a short period of time. Averaging N shunt current readings over a period of time can prevent this.
 #define NUMSAMPLES 12
 // SAMD21E17A PA02
-#define BUCK_ENABLE 2 
+#define BUCK_ENABLE 2
 
 // Long positive integer for storing interval to wait before reading sensors, units are in milliseconds
 unsigned long readinterval = 100;
@@ -54,22 +67,47 @@ enum unit_type {
 
 void setup()
 {
+//  // Switch generic clock 0 (GCLK0) over to the 32.768kHz external crystal clock source
+//  GCLK->GENCTRL.reg = //GCLK_GENCTRL_OE |            // Test: enable GCLK output (on a selected pin)
+//    GCLK_GENCTRL_IDC |           // Set the duty cycle to 50/50 HIGH/LOW
+//    GCLK_GENCTRL_GENEN |         // Enable GCLK0
+//    GCLK_GENCTRL_SRC_XOSC32K |   // Set the external 32.768kHz clock source (XOSC32K)
+//    GCLK_GENCTRL_ID(0);          // Select GCLK0
+//  while (GCLK->STATUS.bit.SYNCBUSY);               // Wait for synchronization
+
+  // Test: enable the GCLK0 output on D2 (PA14)
+  PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 1;
+  PORT->Group[g_APinDescription[2].ulPort].PMUX[g_APinDescription[2].ulPin >> 1].reg |= PORT_PMUX_PMUXE_H;
+  
   Serial.begin(115200);
 
   // Initially enable LM2596 simple switcher
   pinMode(BUCK_ENABLE, OUTPUT);
   digitalWrite(BUCK_ENABLE, LOW);
-  
+
   // Begin I2C communication with and configure 1st INA219 used for input power source
   PWR_IN_IMON.begin();
   // Configure input for 26V max voltage and 3.2A max current @ 0.8mA resolution, averaging of 8 samples per sensor reading
   PWR_IN_IMON.configure(INA219::RANGE_32V, INA219::GAIN_8_320MV, INA219::ADC_8SAMP, INA219::ADC_8SAMP, INA219::CONT_SH_BUS);
   PWR_IN_IMON.calibrate(R_SHUNT, V_SHUNT_MAX, V_BUS_IN_MAX, I_MAX_EXPECTED);
-  
+
   // Configure output for 16V max voltage and 3.2A max current @ 0.8mA resolution
   PWR_OUT_IMON.begin();
   PWR_OUT_IMON.configure(INA219::RANGE_16V, INA219::GAIN_8_320MV, INA219::ADC_8SAMP, INA219::ADC_8SAMP, INA219::CONT_SH_BUS);
   PWR_OUT_IMON.calibrate(R_SHUNT, V_SHUNT_MAX, V_BUS_OUT_MAX, I_MAX_EXPECTED);
+
+  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) 
+  {
+    Serial.println(F("SSD1306 allocation failed"));
+    for (;;)
+      ;  // Don't proceed, loop forever
+  }
+  // Clear the initial screen buffer
+  display.clearDisplay();
+  display.setTextWrap(false);
+  display.setTextSize(1);
+  display.setTextColor(SSD1306_WHITE);
 }
 
 void loop()
@@ -82,7 +120,7 @@ void loop()
   {
     // Read char array input from serial monitor and store it within a string datatype
     String input = Serial.readStringUntil('\n');
-    if (input == "1") 
+    if (input == "1")
     {
       digitalWrite(BUCK_ENABLE, LOW);
     }
@@ -99,7 +137,7 @@ void loop()
     previousMillis = currentMillis;
 
     // Detect under-voltage and over-current events
-    if (over_current_event() || under_voltage_event()) 
+    if (over_current_event() || under_voltage_event())
     {
       digitalWrite(BUCK_ENABLE, HIGH);
     }
@@ -114,14 +152,22 @@ void loop()
     // Restart the non-blocking millis() timer
     previousMillis2 = currentMillis;
 
+    display.clearDisplay();
+    display.setCursor(0, 0);
+
     // Retrieve INA219 measurments by calling class object methods within the INA219 library, print to serial port
-    Serial.print(build_unit_string(voltage, PWR_IN_IMON.busVoltage(), PWR_OUT_IMON.busVoltage()) + '\n');
+    Serial.print(build_unit_string(false, voltage, PWR_IN_IMON.busVoltage(), PWR_OUT_IMON.busVoltage()) + '\n');
+    display.println(build_unit_string(true, voltage, PWR_IN_IMON.busVoltage(), PWR_OUT_IMON.busVoltage()) + '\n');
 
     // Dynamically change units displayed between A/mA depending on whether the measured current is less than or greater than a single unit
-    Serial.print(build_unit_string(current, I_IN_AVERAGE, I_OUT_AVERAGE) + '\n');
+    Serial.print(build_unit_string(false, current, I_IN_AVERAGE, I_OUT_AVERAGE) + '\n');
+    display.println(build_unit_string(true, current, I_IN_AVERAGE, I_OUT_AVERAGE) + '\n');
 
     // Dynamically change units displayed between W/mW depending on whether the measured power is less than or greater than a single unit
-    Serial.println(build_unit_string(power, PWR_IN_IMON.busPower(), PWR_OUT_IMON.busPower()) + '\n');
+    Serial.println(build_unit_string(false, power, PWR_IN_IMON.busPower(), PWR_OUT_IMON.busPower()) + '\n');
+    display.println(build_unit_string(true, power, PWR_IN_IMON.busPower(), PWR_OUT_IMON.busPower()));
+
+    display.display();
   }
 }
 
@@ -134,9 +180,9 @@ bool over_current_event()
   // Check for large delta in input/output current samples over time, which influences how frequently serial data should be printed to be logged
   if (abs(I_IN_AVERAGE - I_IN_AVERAGE_PREVIOUS) > 0.01 || abs(I_OUT_AVERAGE - I_OUT_AVERAGE_PREVIOUS) > 0.01)
   {
-    printinterval = 1000;
+    printinterval = 100;
   }
-  else 
+  else
   {
     printinterval = 10000;
   }
@@ -151,7 +197,7 @@ bool over_current_event()
     return false;
   }
 }
- 
+
 bool under_voltage_event()
 {
   // If input voltage falls below 16VDC, disable regulated output to prevent over-draining of the battery
@@ -162,20 +208,20 @@ bool under_voltage_event()
   else
   {
     return false;
-  } 
+  }
 }
 
 /* This functions prints a formatted human-readable string to the serial port specified in the setup
-* the string that is built is dynamically changed between units of voltage, current or power dependent upon the enumerator passed to this function
-* @param electrical_unit 
-* @param UNIT_IN_MEASURMENT input voltage, current or power
-* @param UNIT_OUT_MEASURMENT output voltage, current or power */
-String build_unit_string(unit_type electrical_unit, float UNIT_IN_MEASUREMENT, float UNIT_OUT_MEASUREMENT)
+  the string that is built is dynamically changed between units of voltage, current or power dependent upon the enumerator passed to this function
+  @param electrical_unit
+  @param UNIT_IN_MEASURMENT input voltage, current or power
+  @param UNIT_OUT_MEASURMENT output voltage, current or power */
+String build_unit_string(bool short_string, unit_type electrical_unit, float UNIT_IN_MEASUREMENT, float UNIT_OUT_MEASUREMENT)
 {
   bool UNIT_IN_RANGE = UNIT_IN_MEASUREMENT >= 1.0 ? true : false;
   bool UNIT_OUT_RANGE = UNIT_OUT_MEASUREMENT >= 1.0 ? true : false;
   // Size of char array which stores floating point number is set large enough to store 4 digits e.g. XXX.X
-  char UNIT_IN_STRING[6], UNIT_OUT_STRING[6]; 
+  char UNIT_IN_STRING[6], UNIT_OUT_STRING[6];
   char UNIT_TEMP_STRING[32];
   char UNIT_STRING[32];
   UNIT_TEMP_STRING[0] = '\0';
@@ -184,19 +230,43 @@ String build_unit_string(unit_type electrical_unit, float UNIT_IN_MEASUREMENT, f
   dtostrf(UNIT_OUT_RANGE ? UNIT_OUT_MEASUREMENT : UNIT_OUT_MEASUREMENT * 1000.0, UNIT_OUT_RANGE ? 3 : 4, UNIT_OUT_RANGE ? 2 : 1, UNIT_OUT_STRING);
   // Char array must be populated in two parts, first by using strcpy to store the first half, then concatenate the second
   // half using strcat()
-  switch(electrical_unit)
+  switch (electrical_unit)
   {
     case voltage:
-      strcpy(UNIT_TEMP_STRING, UNIT_IN_RANGE ? "V_IN/V_OUT:   %sV" : "V_IN/V_OUT:   %smV");
-      strcat(UNIT_TEMP_STRING, UNIT_OUT_RANGE ? " / %sV" : " / %smV");
+      if (short_string)
+      {
+        strcpy(UNIT_TEMP_STRING, UNIT_IN_RANGE ? "%sV" : "%smV");
+        strcat(UNIT_TEMP_STRING, UNIT_OUT_RANGE ? " / %sV" : " / %smV");
+      }
+      else
+      {
+        strcpy(UNIT_TEMP_STRING, UNIT_IN_RANGE ? "V_IN/V_OUT:   %sV" : "V_IN/V_OUT:   %smV");
+        strcat(UNIT_TEMP_STRING, UNIT_OUT_RANGE ? " / %sV" : " / %smV");
+      }
       break;
     case current:
-      strcpy(UNIT_TEMP_STRING, UNIT_IN_RANGE ? "I_IN/I_OUT:   %sA" : "I_IN/I_OUT:   %smA");
-      strcat(UNIT_TEMP_STRING, UNIT_OUT_RANGE ? " / %sA" : " / %smA");
+      if (short_string)
+      {
+        strcpy(UNIT_TEMP_STRING, UNIT_IN_RANGE ? "%sA" : "%smA");
+        strcat(UNIT_TEMP_STRING, UNIT_OUT_RANGE ? " / %sA" : " / %smA");
+      }
+      else
+      {
+        strcpy(UNIT_TEMP_STRING, UNIT_IN_RANGE ? "I_IN/I_OUT:   %sA" : "I_IN/I_OUT:   %smA");
+        strcat(UNIT_TEMP_STRING, UNIT_OUT_RANGE ? " / %sA" : " / %smA");
+      }
       break;
     case power:
-      strcpy(UNIT_TEMP_STRING, UNIT_IN_RANGE ? "P_IN/P_OUT:   %sW" : "P_IN/P_OUT:   %smW");
-      strcat(UNIT_TEMP_STRING, UNIT_OUT_RANGE ? " / %sW" : " / %smW");
+      if (short_string)
+      {
+        strcpy(UNIT_TEMP_STRING, UNIT_IN_RANGE ? "%sW" : "%smW");
+        strcat(UNIT_TEMP_STRING, UNIT_OUT_RANGE ? " / %sW" : " / %smW");
+      }
+      else
+      {
+        strcpy(UNIT_TEMP_STRING, UNIT_IN_RANGE ? "P_IN/P_OUT:   %sW" : "P_IN/P_OUT:   %smW");
+        strcat(UNIT_TEMP_STRING, UNIT_OUT_RANGE ? " / %sW" : " / %smW");
+      }
       break;
     default:
       break;
@@ -207,7 +277,7 @@ String build_unit_string(unit_type electrical_unit, float UNIT_IN_MEASUREMENT, f
 }
 
 // Must explicitly define dtostrf function as it is unsupported for SAMD core in the Wire.h library
-char *dtostrf (double val, signed char width, unsigned char prec, char *sout) 
+char *dtostrf (double val, signed char width, unsigned char prec, char *sout)
 {
   char fmt[20];
   sprintf(fmt, "%%%d.%df", width, prec);
